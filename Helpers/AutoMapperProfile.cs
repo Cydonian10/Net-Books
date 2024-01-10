@@ -9,7 +9,11 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         // * Autores
-        CreateMap<Autor,AutorDto>().ReverseMap();
-        CreateMap<AutorCrearDto,Autor>();
+        CreateMap<Autor, AutorDto>().ReverseMap();
+        CreateMap<AutorCrearDto, Autor>();
+
+        // * Libros
+        CreateMap<Libro,LibroDto>().ReverseMap();
+        CreateMap<LibroCrearDto,Libro>();
     }
 }
