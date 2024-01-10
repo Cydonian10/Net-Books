@@ -8,4 +8,5 @@ public class Autor : IId
 
   [MaxLength(120)]
   public string? Nombre { get; set; }
+  public List<Libro>? Libros { get; set; }
 }
