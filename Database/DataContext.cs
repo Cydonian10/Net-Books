@@ -18,6 +18,13 @@ public class DataContext : DbContext
             e.HasKey(e => e.Id);
         });
 
+        modelBuilder.Entity<Libro>(e =>
+        {
+            e.ToTable("libros");
+            e.HasKey(e => e.Id);
+            e.HasOne(e => e.Autor).WithMany(e => e.Libros).HasForeignKey(e => e.AutorId);
+        });
+
         base.OnModelCreating(modelBuilder);
     }
 }
