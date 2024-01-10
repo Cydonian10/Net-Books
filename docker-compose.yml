@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15.3
+    environment:
+     - POSTGRES_DB=autores_db
+     - POSTGRES_USER=root
+     - POSTGRES_PASSWORD=123456
+    ports:
+      - '5432:5432'
+    volumes:
+      - autores-data:/var/lib/postgresql/data
+
+volumes:
+  autores-data:
+    external: false
