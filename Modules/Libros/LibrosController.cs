@@ -23,7 +23,7 @@ public class LibrosController : CustomBaseController
     [HttpGet]
     public async Task<ActionResult<List<LibroDto>>> List()
     {
-        var libros = await context.Libros.Include(x => x.Autor).ToListAsync();
+        var libros = await context.Libros.ToListAsync();
         var librosDto = mapper.Map<List<LibroDto>>(libros);
         return librosDto;
     }
@@ -31,7 +31,7 @@ public class LibrosController : CustomBaseController
     [HttpGet("{id:int}", Name = "ObtnerLibro")]
     public async Task<ActionResult<LibroDto>> GetOne([FromRoute] int id)
     {
-        var libroDB = await context.Libros.AsNoTracking().Include(x => x.Autor).FirstOrDefaultAsync(x => x.Id == id);
+        var libroDB = await context.Libros.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
         if (libroDB == null) { return NotFound(); }
 

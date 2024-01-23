@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240110162246_Libros")]
-    partial class Libros
+    [Migration("20240123150536_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,27 @@ namespace BookApi.Migrations
                     b.ToTable("autores", (string)null);
                 });
 
+            modelBuilder.Entity("BookApi.Database.Comentario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Contenido")
+                        .HasColumnType("text");
+
+                    b.Property<int>("LibroId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LibroId");
+
+                    b.ToTable("comentarios", (string)null);
+                });
+
             modelBuilder.Entity("BookApi.Database.Libro", b =>
                 {
                     b.Property<int>("Id")
@@ -49,33 +70,28 @@ namespace BookApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AutorId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Titulo")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AutorId");
-
                     b.ToTable("libros", (string)null);
+                });
+
+            modelBuilder.Entity("BookApi.Database.Comentario", b =>
+                {
+                    b.HasOne("BookApi.Database.Libro", "Libro")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("LibroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Libro");
                 });
 
             modelBuilder.Entity("BookApi.Database.Libro", b =>
                 {
-                    b.HasOne("BookApi.Database.Autor", "Autor")
-                        .WithMany("Libros")
-                        .HasForeignKey("AutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Autor");
-                });
-
-            modelBuilder.Entity("BookApi.Database.Autor", b =>
-                {
-                    b.Navigation("Libros");
+                    b.Navigation("Comentarios");
                 });
 #pragma warning restore 612, 618
         }

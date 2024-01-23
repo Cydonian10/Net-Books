@@ -1,4 +1,5 @@
 using BookApi.Database;
+using BookApi.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// IHostedService configuration
+builder.Services.AddHostedService<EscribirArchivo>();
 
 // * Congifuration Automapper
 builder.Services.AddAutoMapper(typeof(Program));

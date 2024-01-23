@@ -1,0 +1,6 @@
+Proceso iniciado
+Proceso en ejecución: 22/01/2024 03:40:40
+Proceso en ejecución: 22/01/2024 03:40:45
+Proceso en ejecución: 22/01/2024 03:40:50
+Proceso en ejecución: 22/01/2024 03:40:55
+Proceso finailzado

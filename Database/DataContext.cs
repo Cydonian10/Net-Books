@@ -9,6 +9,7 @@ public class DataContext : DbContext
 
     public DbSet<Autor> Autores { get; set; }
     public DbSet<Libro> Libros { get; set; }
+    public DbSet<Comentario> Comentarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,7 +23,13 @@ public class DataContext : DbContext
         {
             e.ToTable("libros");
             e.HasKey(e => e.Id);
-            e.HasOne(e => e.Autor).WithMany(e => e.Libros).HasForeignKey(e => e.AutorId);
+        });
+
+        modelBuilder.Entity<Comentario>(e =>
+        {
+            e.ToTable("comentarios");
+            e.HasKey(e => e.Id);
+            e.HasOne(e => e.Libro).WithMany(e => e.Comentarios).HasForeignKey( e => e.LibroId ).OnDelete(DeleteBehavior.Cascade);
         });
 
         base.OnModelCreating(modelBuilder);
