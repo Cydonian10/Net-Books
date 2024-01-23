@@ -9,4 +9,5 @@ public class Libro : IId
     [PrimeraLetraMayuscula]
     public string? Titulo { get; set; }
     public virtual List<Comentario>? Comentarios { get; set; }
+    public List<AutorLibro>? AutorLibros { get; set; }
 }

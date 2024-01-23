@@ -15,5 +15,9 @@ public class AutoMapperProfile : Profile
         // * Libros
         CreateMap<Libro,LibroDto>().ReverseMap();
         CreateMap<LibroCrearDto,Libro>();
+
+        // * Comentarios
+        CreateMap<Comentario,ComentarioDto>();
+        CreateMap<ComentarioCrearDto,Comentario>();
     }
 }

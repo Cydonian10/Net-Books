@@ -4,8 +4,9 @@ namespace BookApi.Database;
 
 public class Autor : IId
 {
-  public int Id { get; set; }
+    public int Id { get; set; }
 
-  [MaxLength(120)]
-  public string? Nombre { get; set; }
+    [MaxLength(120)]
+    public string? Nombre { get; set; }
+    public List<AutorLibro>? AutorLibros { get; set; }
 }

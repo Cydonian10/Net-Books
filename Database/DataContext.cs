@@ -10,6 +10,7 @@ public class DataContext : DbContext
     public DbSet<Autor> Autores { get; set; }
     public DbSet<Libro> Libros { get; set; }
     public DbSet<Comentario> Comentarios { get; set; }
+    public DbSet<AutorLibro> AutorLibros { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,6 +31,14 @@ public class DataContext : DbContext
             e.ToTable("comentarios");
             e.HasKey(e => e.Id);
             e.HasOne(e => e.Libro).WithMany(e => e.Comentarios).HasForeignKey( e => e.LibroId ).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<AutorLibro>(e =>
+        {
+            e.ToTable("autor_libro");
+            e.HasKey(e => new {e.AutorId, e.LibroId});
+            e.HasOne(e => e.Libro).WithMany(e => e.AutorLibros).HasForeignKey(e => e.LibroId);
+            e.HasOne(e => e.Autor).WithMany(e => e.AutorLibros).HasForeignKey(e => e.AutorId);
         });
 
         base.OnModelCreating(modelBuilder);

@@ -6,6 +6,4 @@ public class LibroCrearDto
 {
   public string? Titulo { get; set; }
 
-  [Required]
-  public int AutorId { get; set; }
 }
