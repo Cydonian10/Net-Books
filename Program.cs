@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // IHostedService configuration
-builder.Services.AddHostedService<EscribirArchivo>();
+// sbuilder.Services.AddHostedService<EscribirArchivo>();
 
 // * Congifuration Automapper
 builder.Services.AddAutoMapper(typeof(Program));

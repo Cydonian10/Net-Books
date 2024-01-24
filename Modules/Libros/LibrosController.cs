@@ -29,13 +29,16 @@ public class LibrosController : CustomBaseController
     }
 
     [HttpGet("{id:int}", Name = "ObtnerLibro")]
-    public async Task<ActionResult<LibroDto>> GetOne([FromRoute] int id)
+    public async Task<ActionResult<LibroConAutoresDto>> GetOne([FromRoute] int id)
     {
-        var libroDB = await context.Libros.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        var libroDB = await context.Libros
+                .Include(x => x.AutorLibros!) 
+                .ThenInclude(x => x.Autor)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
         if (libroDB == null) { return NotFound(); }
 
-        var dtos = mapper.Map<LibroDto>(libroDB);
+        var dtos = mapper.Map<LibroConAutoresDto>(libroDB);
 
         return dtos;
     }
@@ -43,16 +46,37 @@ public class LibrosController : CustomBaseController
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] LibroCrearDto libroCrearDto)
     {
+        if(libroCrearDto.AutoresIds == null)
+        {
+            return BadRequest("No hay autores Ids");
+        }
+
+        var autores = await context.Autores
+                .Where(x => libroCrearDto.AutoresIds!.Contains(x.Id))
+                .Select(x => x.Id)
+                .ToListAsync();
+
+        if (libroCrearDto.AutoresIds!.Count != autores.Count)
+        {
+            return BadRequest("No existe algun actors");
+        }
+
         return await Create<Libro, LibroCrearDto, LibroDto>(libroCrearDto, "ObtnerLibro");
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update([FromRoute] int id, [FromRoute] LibroCrearDto libroCrearDto)
+    public async Task<ActionResult> Update([FromRoute] int id, [FromBody] LibroCrearDto libroCrearDto)
     {
-        return await Update<Libro, LibroCrearDto>(id, libroCrearDto);
+        var libroDb = await context.Libros
+            .Include(x => x.AutorLibros)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        libroDb = mapper.Map(libroCrearDto,libroDb);
+        await context.SaveChangesAsync();
+        return NoContent();
     }
 
-    [HttpDelete("")]
+    [HttpDelete("{id:int}")] 
     public async Task<ActionResult> Delete([FromRoute] int id)
     {
         return await Delete<Libro>(id);

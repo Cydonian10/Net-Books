@@ -26,8 +26,16 @@ public class AutoresController : CustomBaseController
     }
 
     [HttpGet("{id:int}", Name = "ObtnerAutor")]
-    public async Task<ActionResult<AutorDto>> GetOne([FromRoute] int id){
-        return await GetOne<Autor,AutorDto>(id);
+    public async Task<ActionResult<AutorConLibrosDto>> GetOne([FromRoute] int id)
+    { 
+        var autores = await context.Autores
+                .Include(x => x.AutorLibros!)
+                .ThenInclude(x => x.Libro)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+        var autoresDto = mapper.Map<AutorConLibrosDto>(autores);
+
+        return autoresDto;
     }
 
     [HttpPost]
